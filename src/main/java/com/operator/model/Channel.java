@@ -7,21 +7,17 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -54,20 +50,18 @@ public class Channel {
     
     @ManyToMany(mappedBy = "channels")
 	private Set<Supplier> suppliers;
+    
+    @OneToOne(mappedBy = "channel")
+    private Price price;    
 
 	@NotBlank
 	private String name;
 
 	@NotNull
 	private Category category;
-
-	@ManyToOne(fetch = FetchType.EAGER, optional = false)
-	@JoinColumn(name = "supplier_id", nullable = false)
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private Supplier supplier;
 	
 	@NotNull
-	private BigDecimal price;
+	private BigDecimal fee;
 
 	public Long getId() {
 		return id;
@@ -101,22 +95,6 @@ public class Channel {
 		this.name = name;
 	}
 
-	public Supplier getSupplier() {
-		return supplier;
-	}
-
-	public void setSupplier(Supplier supplier) {
-		this.supplier = supplier;
-	}
-
-	public BigDecimal getPrice() {
-		return price;
-	}
-
-	public void setPrice(BigDecimal price) {
-		this.price = price;
-	}
-
 	public Category getCategory() {
 		return category;
 	}
@@ -139,6 +117,22 @@ public class Channel {
 
 	public void setSuppliers(Set<Supplier> suppliers) {
 		this.suppliers = suppliers;
+	}
+
+	public Price getPrice() {
+		return price;
+	}
+
+	public void setPrice(Price price) {
+		this.price = price;
+	}
+
+	public BigDecimal getFee() {
+		return fee;
+	}
+
+	public void setFee(BigDecimal fee) {
+		this.fee = fee;
 	}
 
 }

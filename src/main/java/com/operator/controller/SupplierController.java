@@ -55,7 +55,7 @@ public class SupplierController {
 
         Supplier updatedSupplier = supplierRepository.save(supplier);
         return updatedSupplier;
-    }
+    }  
     
     @DeleteMapping("/suppliers/delete/{id}")
     public ResponseEntity<?> deleteSupplier(@PathVariable(value = "id") Long supplierId) {

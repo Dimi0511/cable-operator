@@ -64,7 +64,7 @@ public class ChannelController {
 
         channel.setName(channelDetails.getName());
         channel.setPrice(channelDetails.getPrice());
-        channel.setSupplier(channelDetails.getSupplier());
+        channel.setSuppliers(channelDetails.getSuppliers());
 
         Channel updatedChannel = channelRepository.save(channel);
         return updatedChannel;

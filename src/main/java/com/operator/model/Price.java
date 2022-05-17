@@ -1,7 +1,7 @@
 package com.operator.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,13 +11,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Table; 
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotBlank;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -26,10 +25,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name = "suppliers")
+@Table(name = "prices", uniqueConstraints = { @UniqueConstraint(columnNames = { "channel_id", "supplier_id" }) })
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = { "createdAt", "updatedAt" }, allowGetters = true)
-public class Supplier {
+public class Price {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,25 +44,16 @@ public class Supplier {
 	@LastModifiedDate
 	private Date updatedAt;
 
-	@NotBlank
-	private String name;
-	
-	@ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(
-        name = "Supplier_Channel", 
-        joinColumns = { @JoinColumn(name = "supplier_id") }, 
-        inverseJoinColumns = { @JoinColumn(name = "channel_id") }
-    )	private Set<Channel> channels;
-	
-	@ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(
-        name = "Supplier_Plan", 
-        joinColumns = { @JoinColumn(name = "supplier_id") }, 
-        inverseJoinColumns = { @JoinColumn(name = "plan_id") }
-    )	private Set<Plan> plans;
-	
-    @OneToOne(mappedBy = "supplier")
-    private Price price; 
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "channel_id", referencedColumnName = "id")
+	private Channel channel;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "supplier_id", referencedColumnName = "id")
+	private Supplier supplier;
+
+	@NotNull
+	private BigDecimal fee;
 
 	public Long getId() {
 		return id;
@@ -89,36 +79,28 @@ public class Supplier {
 		this.updatedAt = updatedAt;
 	}
 
-	public String getName() {
-		return name;
+	public Channel getChannel() {
+		return channel;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setChannel(Channel channel) {
+		this.channel = channel;
 	}
 
-	public Set<Channel> getChannels() {
-		return channels;
+	public Supplier getSupplier() {
+		return supplier;
 	}
 
-	public void setChannels(Set<Channel> channels) {
-		this.channels = channels;
+	public void setSupplier(Supplier supplier) {
+		this.supplier = supplier;
 	}
 
-	public Set<Plan> getPlans() {
-		return plans;
+	public BigDecimal getFee() {
+		return fee;
 	}
 
-	public void setPlans(Set<Plan> plans) {
-		this.plans = plans;
-	}
-
-	public Price getPrice() {
-		return price;
-	}
-
-	public void setPrice(Price price) {
-		this.price = price;
+	public void setFee(BigDecimal fee) {
+		this.fee = fee;
 	}
 
 }

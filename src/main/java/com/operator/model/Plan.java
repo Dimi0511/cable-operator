@@ -58,6 +58,9 @@ public class Plan {
         inverseJoinColumns = { @JoinColumn(name = "channel_id") }
     )	private Set<Channel> channels;
 	
+    @ManyToMany(mappedBy = "plans")
+	private Set<Supplier> suppliers;
+	
 	public Plan(Set<Channel> channels) {
 		super();
 		this.channels = channels;
@@ -113,7 +116,7 @@ public class Plan {
 	public void setMonthlyFee() {
 		BigDecimal fee = new BigDecimal(0);
 		for(Channel channel : this.getChannels()) {
-			fee.add(channel.getPrice());
+			fee.add(channel.getFee());
 		}
 		this.monthlyFee = fee;
 	}
