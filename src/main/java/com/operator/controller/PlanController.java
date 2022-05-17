@@ -26,22 +26,22 @@ public class PlanController {
 	@Autowired
 	private PlanRepository planRepository;
 
-	@GetMapping("/plans")
+	@GetMapping("/plans/read")
 	public List<Plan> getAllPlans() {
 		return planRepository.findAll();
 	}
 
-	@PostMapping("/plans")
+	@PostMapping("/plans/create")
 	public Plan createPlan(@Valid @RequestBody Plan plan) {
 		return planRepository.save(plan);
 	}
 
-	@GetMapping("/plans/{id}")
+	@GetMapping("/plans/read/{id}")
 	public Plan getPlanById(@PathVariable(value = "id") Long planId) {
 		return planRepository.findById(planId).orElseThrow(() -> new ResourceNotFoundException("Plan", "id", planId));
 	}
 
-	@PutMapping("/plans/{id}")
+	@PutMapping("/plans/update/{id}")
 	public Plan updatePlan(@PathVariable(value = "id") Long planId, @Valid @RequestBody Plan planDetails) {
 
 		Plan plan = planRepository.findById(planId)
@@ -53,7 +53,7 @@ public class PlanController {
 		return updatedPlan;
 	}
 
-	@DeleteMapping("/plans/{id}")
+	@DeleteMapping("/plans/delete/{id}")
 	public ResponseEntity<?> deletePlan(@PathVariable(value = "id") Long planId) {
 		Plan plan = planRepository.findById(planId)
 				.orElseThrow(() -> new ResourceNotFoundException("Supplier", "id", planId));

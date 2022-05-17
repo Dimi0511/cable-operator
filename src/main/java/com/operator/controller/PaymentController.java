@@ -12,22 +12,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.operator.exception.PaymentNotValidException;
 import com.operator.model.Payment;
-import com.operator.repository.PaymentRepository; 
+import com.operator.repository.PaymentRepository;
 
 @RestController
 @RequestMapping("/api/v1")
 public class PaymentController {
-	
+
 	@Autowired
 	private PaymentRepository paymentRepository;
-	
-	@PostMapping("/payments")
+
+	@PostMapping("/payments/create")
 	public Payment createPayment(@Valid @RequestBody Payment payment) {
-		BigDecimal contractFee = payment.getFee();
-		if(payment.getFee().compareTo(contractFee) <= -1) {
+		BigDecimal contractFee = payment.getContract().getMonthlyFee();
+		if (payment.getFee().compareTo(contractFee) <= -1) {
 			throw new PaymentNotValidException("Payment", "id", payment.getFee());
 		} else {
-			return paymentRepository.save(payment); 
+			return paymentRepository.save(payment);
 		}
 	}
 

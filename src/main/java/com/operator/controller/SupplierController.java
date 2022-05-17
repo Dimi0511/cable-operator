@@ -27,23 +27,23 @@ public class SupplierController {
 	@Autowired
 	private SupplierRepository supplierRepository;
 	
-    @GetMapping("/suppliers")
+    @GetMapping("/suppliers/read")
     public List<Supplier> getAllSuppliers() {
         return supplierRepository.findAll();
     }
     
-    @PostMapping("/suppliers")
+    @PostMapping("/suppliers/create")
     public Supplier createSupplier(@Valid @RequestBody Supplier supplier) {
         return supplierRepository.save(supplier);
     }
     
-    @GetMapping("/suppliers/{id}")
+    @GetMapping("/suppliers/read/{id}")
     public Supplier getSupplierById(@PathVariable(value = "id") Long supplierId) {
         return supplierRepository.findById(supplierId)
                 .orElseThrow(() -> new ResourceNotFoundException("Supplier", "id", supplierId));
     }
     
-    @PutMapping("/suppliers/{id}")
+    @PutMapping("/suppliers/update/{id}")
     public Supplier updateSupplier(@PathVariable(value = "id") Long supplierId,
                                            @Valid @RequestBody Supplier supplierDetails) {
 
@@ -56,7 +56,7 @@ public class SupplierController {
         return updatedSupplier;
     }
     
-    @DeleteMapping("/suppliers/{id}")
+    @DeleteMapping("/suppliers/delete/{id}")
     public ResponseEntity<?> deleteSupplier(@PathVariable(value = "id") Long supplierId) {
         Supplier supplier = supplierRepository.findById(supplierId)
                 .orElseThrow(() -> new ResourceNotFoundException("Supplier", "id", supplierId));

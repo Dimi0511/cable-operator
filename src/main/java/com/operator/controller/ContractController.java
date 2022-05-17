@@ -26,23 +26,23 @@ public class ContractController {
 	@Autowired
 	private ContractRepository contractRepository;
 	
-    @GetMapping("/contracts")
+    @GetMapping("/contracts/read")
     public List<Contract> getAllContracts() {
         return contractRepository.findAll();
     }
     
-    @PostMapping("/contracts")
+    @PostMapping("/contracts/create")
     public Contract createContract(@Valid @RequestBody Contract contract) {
         return contractRepository.save(contract);
     }
     
-    @GetMapping("/contracts/{id}")
+    @GetMapping("/contracts/read/{id}")
     public Contract getContractById(@PathVariable(value = "id") Long contractId) {
         return contractRepository.findById(contractId)
                 .orElseThrow(() -> new ResourceNotFoundException("Contract", "id", contractId));
     }
     
-    @PutMapping("/contracts/{id}")
+    @PutMapping("/contracts/update/{id}")
     public Contract updateContract(@PathVariable(value = "id") Long contractId,
                                            @Valid @RequestBody Contract contractDetails) {
 
@@ -55,7 +55,7 @@ public class ContractController {
         return updatedContract;
     }
     
-    @DeleteMapping("/contracts/{id}")
+    @DeleteMapping("/contracts/delete/{id}")
     public ResponseEntity<?> deleteContract(@PathVariable(value = "id") Long contractId) {
         Contract contract = contractRepository.findById(contractId)
                 .orElseThrow(() -> new ResourceNotFoundException("Contract", "id", contractId));

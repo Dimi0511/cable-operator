@@ -29,24 +29,24 @@ public class CustomerController {
      @Autowired
      CustomerRepository customerRepository;
      
-     @GetMapping("/customers")
+     @GetMapping("/customers/read")
      public List<Customer> getAllCustomers() {
          return customerRepository.findAll();
      }
      
      
-     @PostMapping("/customers")
+     @PostMapping("/customers/create")
      public Customer createCustomer(@Valid @RequestBody Customer customer) {
          return customerRepository.save(customer);
      }
      
-     @GetMapping("/customers/{id}")
+     @GetMapping("/customers/read/{id}")
      public Customer getCustomertById(@PathVariable(value = "id") Long customerId) {
          return customerRepository.findById(customerId)
                  .orElseThrow(() -> new ResourceNotFoundException("Customer", "id", customerId));
      }
      
-     @GetMapping("/customers/{id}/payments")
+     @GetMapping("/customers/read/{id}/payments")
      public List<Payment> getAllPayments(@PathVariable(value = "id") Long customerId) {
     	 Customer customer = customerRepository.getById(customerId);
     	 List<Contract> contractList = customer.getContractList();
@@ -57,14 +57,14 @@ public class CustomerController {
     	 return payments; 
      }
      
-     @GetMapping("/customers/{id}/contracts")
+     @GetMapping("/customers/read/{id}/contracts")
      public List<Contract> getAllContractsByCustomertById(@PathVariable(value = "id") Long customerId) {
          Customer customer = customerRepository.findById(customerId)
                  .orElseThrow(() -> new ResourceNotFoundException("Customer", "id", customerId));
          return customer.getContractList();
      }
      
-     @PutMapping("/customers/{id}")
+     @PutMapping("/customers/update/{id}")
      public Customer updateCustomer(@PathVariable(value = "id") Long customerId,
                                             @Valid @RequestBody Customer customerDetails) {
 
@@ -81,7 +81,7 @@ public class CustomerController {
          return updatedCustomer;
      }
      
-     @DeleteMapping("/customers/{id}")
+     @DeleteMapping("/customers/delete/{id}")
      public ResponseEntity<?> deleteCustomer(@PathVariable(value = "id") Long customerId) {
          Customer customer = customerRepository.findById(customerId)
                  .orElseThrow(() -> new ResourceNotFoundException("Customer", "id", customerId));

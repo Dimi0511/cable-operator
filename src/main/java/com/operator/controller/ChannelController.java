@@ -26,12 +26,12 @@ public class ChannelController {
 	@Autowired
 	private ChannelRepository channelRepository;
 	
-    @GetMapping("/channels")
+    @GetMapping("/channels/read")
     public List<Channel> getAllChannels() {
         return channelRepository.findAll();
     }
     
-    @PostMapping("/channels")
+    @PostMapping("/channels/create")
     public Channel createChannel(@Valid @RequestBody Channel channel) {
         return channelRepository.save(channel);
     }
@@ -42,12 +42,12 @@ public class ChannelController {
     }   
 
     
-    @GetMapping("/channels/{id}")
+    @GetMapping("/channels/read/{id}")
     public Channel getChannelById(@PathVariable(value = "id") Long channelId) {
         return channelRepository.findById(channelId) 
                 .orElseThrow(() -> new ResourceNotFoundException("Channel", "id", channelId));
     }
-    @PutMapping("/channels/{id}")
+    @PutMapping("/channels/update/{id}")
     public Channel updateChannel(@PathVariable(value = "id") Long channelId,
                                            @Valid @RequestBody Channel channelDetails) {
 
@@ -62,7 +62,7 @@ public class ChannelController {
         return updatedChannel;
     }
     
-    @DeleteMapping("/channels/{id}")
+    @DeleteMapping("/channels/delete/{id}")
     public ResponseEntity<?> deleteChannel(@PathVariable(value = "id") Long channelId) {
         Channel channel = channelRepository.findById(channelId)
                 .orElseThrow(() -> new ResourceNotFoundException("Channel", "id", channelId));
