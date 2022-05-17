@@ -27,7 +27,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties; 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "contracts")
@@ -38,7 +38,7 @@ public class Contract {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Column(nullable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@CreatedDate
@@ -47,24 +47,23 @@ public class Contract {
 	@Column(nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@LastModifiedDate
-	private Date updatedAt; 
-	
-	@Column(unique=true)
+	private Date updatedAt;
+
+	@Column(unique = true)
 	private Long contractNumber;
-	
-    @ManyToMany(mappedBy = "contracts")
+
+	@ManyToMany(mappedBy = "contracts")
 	private Set<Plan> plans;
-	
+
 	private BigDecimal monthlyFee;
-	
+
 	@ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(name = "customer_id", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Customer customer;
-	
+
 	@OneToMany(mappedBy = "contract", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Payment> paymentList;
-	
 
 	public Long getId() {
 		return id;
@@ -129,6 +128,5 @@ public class Contract {
 	public void setPlans(Set<Plan> plans) {
 		this.plans = plans;
 	}
-	
-	
+
 }

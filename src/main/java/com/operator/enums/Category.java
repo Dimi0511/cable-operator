@@ -8,7 +8,7 @@ public enum Category {
 	public final String label;
 
 	private Category(String label) {
-		this.label = label; 
+		this.label = label;
 	}
 
 	public String getLabel() {

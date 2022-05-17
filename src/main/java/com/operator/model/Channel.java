@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.operator.enums.Category;
 
 @Entity
-@Table(name = "channels") 
+@Table(name = "channels")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = { "createdAt", "updatedAt" }, allowGetters = true)
 public class Channel {
@@ -43,23 +43,23 @@ public class Channel {
 	@Column(nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@LastModifiedDate
-	private Date updatedAt; 
-	
-    @ManyToMany(mappedBy = "channels")
+	private Date updatedAt;
+
+	@ManyToMany(mappedBy = "channels")
 	private Set<Plan> plans;
-    
-    @ManyToMany(mappedBy = "channels")
+
+	@ManyToMany(mappedBy = "channels")
 	private Set<Supplier> suppliers;
-    
-    @OneToOne(mappedBy = "channel")
-    private Price price;    
+
+	@OneToOne(mappedBy = "channel")
+	private Price price;
 
 	@NotBlank
 	private String name;
 
 	@NotNull
 	private Category category;
-	
+
 	@NotNull
 	private BigDecimal fee;
 

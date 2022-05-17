@@ -20,7 +20,7 @@ import javax.persistence.TemporalType;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener; 
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -29,38 +29,34 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = { "createdAt", "updatedAt" }, allowGetters = true)
 public class Plan {
-	
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY) 
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(nullable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@CreatedDate
-	private Date createdAt; 
+	private Date createdAt;
 
 	@Column(nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@LastModifiedDate
 	private Date updatedAt;
-	
+
 	@ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(
-        name = "Plan_Contract", 
-        joinColumns = { @JoinColumn(name = "plan_id") }, 
-        inverseJoinColumns = { @JoinColumn(name = "contract_id") }
-    )	private Set<Contract> contracts;
-	
+	@JoinTable(name = "Plan_Contract", joinColumns = { @JoinColumn(name = "plan_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "contract_id") })
+	private Set<Contract> contracts;
+
 	@ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(
-        name = "Plan_Channel", 
-        joinColumns = { @JoinColumn(name = "plan_id") }, 
-        inverseJoinColumns = { @JoinColumn(name = "channel_id") }
-    )	private Set<Channel> channels;
-	
-    @ManyToMany(mappedBy = "plans")
+	@JoinTable(name = "Plan_Channel", joinColumns = { @JoinColumn(name = "plan_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "channel_id") })
+	private Set<Channel> channels;
+
+	@ManyToMany(mappedBy = "plans")
 	private Set<Supplier> suppliers;
-	
+
 	public Plan(Set<Channel> channels) {
 		super();
 		this.channels = channels;
@@ -115,10 +111,10 @@ public class Plan {
 
 	public void setMonthlyFee() {
 		BigDecimal fee = new BigDecimal(0);
-		for(Channel channel : this.getChannels()) {
+		for (Channel channel : this.getChannels()) {
 			fee.add(channel.getFee());
 		}
 		this.monthlyFee = fee;
 	}
-	
+
 }

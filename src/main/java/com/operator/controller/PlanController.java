@@ -29,9 +29,9 @@ public class PlanController {
 
 	@Autowired
 	private PlanRepository planRepository;
-	
-	@Autowired 
-	private ChannelRepository channelRepository; 
+
+	@Autowired
+	private ChannelRepository channelRepository;
 
 	@GetMapping("/plans/read")
 	public List<Plan> getAllPlans() {
@@ -42,12 +42,12 @@ public class PlanController {
 	public Plan createPlan(@Valid @RequestBody Plan plan) {
 		return planRepository.save(plan);
 	}
-	
+
 	@PostMapping("/plans/createByCategory")
 	public Plan createPlanByCategory(@Valid @RequestBody String category) {
 		List<Channel> channelsList = channelRepository.findByCategory(category);
-		Set<Channel> channels = new HashSet<Channel>(channelsList); 
-		return new Plan(channels); 
+		Set<Channel> channels = new HashSet<Channel>(channelsList);
+		return new Plan(channels);
 	}
 
 	@GetMapping("/plans/read/{id}")

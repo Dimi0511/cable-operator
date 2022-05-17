@@ -1,8 +1,7 @@
-package com.operator.controller; 
+package com.operator.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -24,60 +23,60 @@ import com.operator.repository.ChannelRepository;
 @RestController
 @RequestMapping("/api/v1")
 public class ChannelController {
-	
+
 	@Autowired
 	private ChannelRepository channelRepository;
-	
-    @GetMapping("/channels/read")
-    public List<Channel> getAllChannels() {
-        return channelRepository.findAll();
-    }
-    
-    @PostMapping("/channels/create")
-    public Channel createChannel(@Valid @RequestBody Channel channel) {
-        return channelRepository.save(channel);
-    }
-    
-    @GetMapping("/channels/read/{category}") 
-    public List<Channel> getAllChannelsByCategory(String category) {
-    	List<Channel> channelList = new ArrayList<Channel>();
-        for (Channel channel : channelRepository.findAll()) {
-        	if(channel.getCategory().toString().equals(category)) {
-        		channelList.add(channel);
-        	}
-         }
-        return channelList; 
-    }   
 
-    
-    @GetMapping("/channels/read/{id}")
-    public Channel getChannelById(@PathVariable(value = "id") Long channelId) {
-        return channelRepository.findById(channelId) 
-                .orElseThrow(() -> new ResourceNotFoundException("Channel", "id", channelId));
-    }
-    @PutMapping("/channels/update/{id}")
-    public Channel updateChannel(@PathVariable(value = "id") Long channelId,
-                                           @Valid @RequestBody Channel channelDetails) {
+	@GetMapping("/channels/read")
+	public List<Channel> getAllChannels() {
+		return channelRepository.findAll();
+	}
 
-        Channel channel = channelRepository.findById(channelId)
-                .orElseThrow(() -> new ResourceNotFoundException("Channel", "id", channelId));
+	@PostMapping("/channels/create")
+	public Channel createChannel(@Valid @RequestBody Channel channel) {
+		return channelRepository.save(channel);
+	}
 
-        channel.setName(channelDetails.getName());
-        channel.setPrice(channelDetails.getPrice());
-        channel.setSuppliers(channelDetails.getSuppliers());
+	@GetMapping("/channels/read/{category}")
+	public List<Channel> getAllChannelsByCategory(String category) {
+		List<Channel> channelList = new ArrayList<Channel>();
+		for (Channel channel : channelRepository.findAll()) {
+			if (channel.getCategory().toString().equals(category)) {
+				channelList.add(channel);
+			}
+		}
+		return channelList;
+	}
 
-        Channel updatedChannel = channelRepository.save(channel);
-        return updatedChannel;
-    }
-    
-    @DeleteMapping("/channels/delete/{id}")
-    public ResponseEntity<?> deleteChannel(@PathVariable(value = "id") Long channelId) {
-        Channel channel = channelRepository.findById(channelId)
-                .orElseThrow(() -> new ResourceNotFoundException("Channel", "id", channelId));
+	@GetMapping("/channels/read/{id}")
+	public Channel getChannelById(@PathVariable(value = "id") Long channelId) {
+		return channelRepository.findById(channelId)
+				.orElseThrow(() -> new ResourceNotFoundException("Channel", "id", channelId));
+	}
 
-        channelRepository.delete(channel);
+	@PutMapping("/channels/update/{id}")
+	public Channel updateChannel(@PathVariable(value = "id") Long channelId,
+			@Valid @RequestBody Channel channelDetails) {
 
-        return ResponseEntity.ok().build();
-    }
+		Channel channel = channelRepository.findById(channelId)
+				.orElseThrow(() -> new ResourceNotFoundException("Channel", "id", channelId));
+
+		channel.setName(channelDetails.getName());
+		channel.setPrice(channelDetails.getPrice());
+		channel.setSuppliers(channelDetails.getSuppliers());
+
+		Channel updatedChannel = channelRepository.save(channel);
+		return updatedChannel;
+	}
+
+	@DeleteMapping("/channels/delete/{id}")
+	public ResponseEntity<?> deleteChannel(@PathVariable(value = "id") Long channelId) {
+		Channel channel = channelRepository.findById(channelId)
+				.orElseThrow(() -> new ResourceNotFoundException("Channel", "id", channelId));
+
+		channelRepository.delete(channel);
+
+		return ResponseEntity.ok().build();
+	}
 
 }

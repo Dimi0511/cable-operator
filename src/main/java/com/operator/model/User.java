@@ -23,7 +23,7 @@ public class User {
 	private String firstName;
 
 	@NotBlank
-	private String lastName; 
+	private String lastName;
 
 	@NotBlank
 	private String username;

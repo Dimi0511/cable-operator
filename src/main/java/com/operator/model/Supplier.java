@@ -14,7 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Table; 
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
@@ -47,23 +47,19 @@ public class Supplier {
 
 	@NotBlank
 	private String name;
-	
+
 	@ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(
-        name = "Supplier_Channel", 
-        joinColumns = { @JoinColumn(name = "supplier_id") }, 
-        inverseJoinColumns = { @JoinColumn(name = "channel_id") }
-    )	private Set<Channel> channels;
-	
+	@JoinTable(name = "Supplier_Channel", joinColumns = { @JoinColumn(name = "supplier_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "channel_id") })
+	private Set<Channel> channels;
+
 	@ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(
-        name = "Supplier_Plan", 
-        joinColumns = { @JoinColumn(name = "supplier_id") }, 
-        inverseJoinColumns = { @JoinColumn(name = "plan_id") }
-    )	private Set<Plan> plans;
-	
-    @OneToOne(mappedBy = "supplier")
-    private Price price; 
+	@JoinTable(name = "Supplier_Plan", joinColumns = { @JoinColumn(name = "supplier_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "plan_id") })
+	private Set<Plan> plans;
+
+	@OneToOne(mappedBy = "supplier")
+	private Price price;
 
 	public Long getId() {
 		return id;

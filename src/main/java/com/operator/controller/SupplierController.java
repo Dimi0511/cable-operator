@@ -21,50 +21,49 @@ import com.operator.repository.SupplierRepository;
 
 @RestController
 @RequestMapping("/api/v1")
-public class SupplierController { 
+public class SupplierController {
 
-	
 	@Autowired
 	private SupplierRepository supplierRepository;
-	
-    @GetMapping("/suppliers/read")
-    public List<Supplier> getAllSuppliers() {
-        return supplierRepository.findAll();
-    }
-    
-    @PostMapping("/suppliers/create")
-    public Supplier createSupplier(@Valid @RequestBody Supplier supplier) {
-        return supplierRepository.save(supplier);
-    }
-    
-    @GetMapping("/suppliers/read/{id}")
-    public Supplier getSupplierById(@PathVariable(value = "id") Long supplierId) {
-        return supplierRepository.findById(supplierId)
-                .orElseThrow(() -> new ResourceNotFoundException("Supplier", "id", supplierId));
-    }
-    
-    @PutMapping("/suppliers/update/{id}")
-    public Supplier updateSupplier(@PathVariable(value = "id") Long supplierId,
-                                           @Valid @RequestBody Supplier supplierDetails) {
 
-        Supplier supplier = supplierRepository.findById(supplierId)
-                .orElseThrow(() -> new ResourceNotFoundException("Supplier", "id", supplierId));
-        
-        supplier.setName(supplierDetails.getName());
-        supplier.setChannels(supplierDetails.getChannels());
+	@GetMapping("/suppliers/read")
+	public List<Supplier> getAllSuppliers() {
+		return supplierRepository.findAll();
+	}
 
-        Supplier updatedSupplier = supplierRepository.save(supplier);
-        return updatedSupplier;
-    }  
-    
-    @DeleteMapping("/suppliers/delete/{id}")
-    public ResponseEntity<?> deleteSupplier(@PathVariable(value = "id") Long supplierId) {
-        Supplier supplier = supplierRepository.findById(supplierId)
-                .orElseThrow(() -> new ResourceNotFoundException("Supplier", "id", supplierId));
+	@PostMapping("/suppliers/create")
+	public Supplier createSupplier(@Valid @RequestBody Supplier supplier) {
+		return supplierRepository.save(supplier);
+	}
 
-        supplierRepository.delete(supplier);
+	@GetMapping("/suppliers/read/{id}")
+	public Supplier getSupplierById(@PathVariable(value = "id") Long supplierId) {
+		return supplierRepository.findById(supplierId)
+				.orElseThrow(() -> new ResourceNotFoundException("Supplier", "id", supplierId));
+	}
 
-        return ResponseEntity.ok().build();
-    }
+	@PutMapping("/suppliers/update/{id}")
+	public Supplier updateSupplier(@PathVariable(value = "id") Long supplierId,
+			@Valid @RequestBody Supplier supplierDetails) {
+
+		Supplier supplier = supplierRepository.findById(supplierId)
+				.orElseThrow(() -> new ResourceNotFoundException("Supplier", "id", supplierId));
+
+		supplier.setName(supplierDetails.getName());
+		supplier.setChannels(supplierDetails.getChannels());
+
+		Supplier updatedSupplier = supplierRepository.save(supplier);
+		return updatedSupplier;
+	}
+
+	@DeleteMapping("/suppliers/delete/{id}")
+	public ResponseEntity<?> deleteSupplier(@PathVariable(value = "id") Long supplierId) {
+		Supplier supplier = supplierRepository.findById(supplierId)
+				.orElseThrow(() -> new ResourceNotFoundException("Supplier", "id", supplierId));
+
+		supplierRepository.delete(supplier);
+
+		return ResponseEntity.ok().build();
+	}
 
 }

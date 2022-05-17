@@ -2,7 +2,6 @@ package com.operator.model;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -54,11 +53,11 @@ public class Customer {
 
 	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Contract> contractList;
-	
+
 	/*
 	 * Customer Personal Identification Number
 	 */
-	@Column(unique=true)
+	@Column(unique = true)
 	private Double PIN;
 
 	public Long getId() {
@@ -114,7 +113,7 @@ public class Customer {
 	}
 
 	public void setPIN(Double PIN) {
-		this.PIN = PIN; 
+		this.PIN = PIN;
 	}
 
 	public List<Contract> getContractList() {
