@@ -38,10 +38,10 @@ public class ChannelController {
 	}
 
 	@GetMapping("/channels/read/{category}")
-	public List<Channel> getAllChannelsByCategory(String category) {
+	public List<Channel> getAllChannelsByCategory(@PathVariable(value = "category") String category) {
 		List<Channel> channelList = new ArrayList<Channel>();
 		for (Channel channel : channelRepository.findAll()) {
-			if (channel.getCategory().toString().equals(category)) {
+			if (channel.getCategory().toString().equals(category)) { 
 				channelList.add(channel);
 			}
 		}
