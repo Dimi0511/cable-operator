@@ -1,6 +1,8 @@
 package com.operator.controller; 
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -36,9 +38,15 @@ public class ChannelController {
         return channelRepository.save(channel);
     }
     
-    @GetMapping("/channels/{category}") 
+    @GetMapping("/channels/read/{category}") 
     public List<Channel> getAllChannelsByCategory(String category) {
-        return channelRepository.findAll();
+    	List<Channel> channelList = new ArrayList<Channel>();
+        for (Channel channel : channelRepository.findAll()) {
+        	if(channel.getCategory().toString().equals(category)) {
+        		channelList.add(channel);
+        	}
+         }
+        return channelList; 
     }   
 
     

@@ -1,6 +1,8 @@
 package com.operator.controller;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -16,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.operator.exception.ResourceNotFoundException;
+import com.operator.model.Channel;
 import com.operator.model.Plan;
+import com.operator.repository.ChannelRepository;
 import com.operator.repository.PlanRepository;
 
 @RestController
@@ -25,6 +29,9 @@ public class PlanController {
 
 	@Autowired
 	private PlanRepository planRepository;
+	
+	@Autowired 
+	private ChannelRepository channelRepository; 
 
 	@GetMapping("/plans/read")
 	public List<Plan> getAllPlans() {
@@ -34,6 +41,13 @@ public class PlanController {
 	@PostMapping("/plans/create")
 	public Plan createPlan(@Valid @RequestBody Plan plan) {
 		return planRepository.save(plan);
+	}
+	
+	@PostMapping("/plans/createByCategory")
+	public Plan createPlanByCategory(@Valid @RequestBody String category) {
+		List<Channel> channelsList = channelRepository.findByCategory(category);
+		Set<Channel> channels = new HashSet<Channel>(channelsList); 
+		return new Plan(channels); 
 	}
 
 	@GetMapping("/plans/read/{id}")
@@ -47,7 +61,7 @@ public class PlanController {
 		Plan plan = planRepository.findById(planId)
 				.orElseThrow(() -> new ResourceNotFoundException("Plan", "id", planId));
 
-		plan.setChannels(planDetails.getChannels());
+		plan.setContracts(planDetails.getContracts());
 
 		Plan updatedPlan = planRepository.save(plan);
 		return updatedPlan;

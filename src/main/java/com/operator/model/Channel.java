@@ -51,6 +51,9 @@ public class Channel {
 	
     @ManyToMany(mappedBy = "channels")
 	private Set<Plan> plans;
+    
+    @ManyToMany(mappedBy = "channels")
+	private Set<Supplier> suppliers;
 
 	@NotBlank
 	private String name;
@@ -128,6 +131,14 @@ public class Channel {
 
 	public void setPlans(Set<Plan> plans) {
 		this.plans = plans;
+	}
+
+	public Set<Supplier> getSuppliers() {
+		return suppliers;
+	}
+
+	public void setSuppliers(Set<Supplier> suppliers) {
+		this.suppliers = suppliers;
 	}
 
 }

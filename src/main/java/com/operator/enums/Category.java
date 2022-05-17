@@ -11,4 +11,8 @@ public enum Category {
 		this.label = label; 
 	}
 
+	public String getLabel() {
+		return label;
+	}
+
 }

@@ -1,5 +1,6 @@
 package com.operator.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Set;
 
@@ -45,10 +46,25 @@ public class Plan {
 	
 	@ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(
+        name = "Plan_Contract", 
+        joinColumns = { @JoinColumn(name = "plan_id") }, 
+        inverseJoinColumns = { @JoinColumn(name = "contract_id") }
+    )	private Set<Contract> contracts;
+	
+	@ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
         name = "Plan_Channel", 
         joinColumns = { @JoinColumn(name = "plan_id") }, 
         inverseJoinColumns = { @JoinColumn(name = "channel_id") }
     )	private Set<Channel> channels;
+	
+	public Plan(Set<Channel> channels) {
+		super();
+		this.channels = channels;
+		setMonthlyFee();
+	}
+
+	private BigDecimal monthlyFee;
 
 	public Long getId() {
 		return id;
@@ -74,6 +90,14 @@ public class Plan {
 		this.updatedAt = updatedAt;
 	}
 
+	public Set<Contract> getContracts() {
+		return contracts;
+	}
+
+	public void setContracts(Set<Contract> contracts) {
+		this.contracts = contracts;
+	}
+
 	public Set<Channel> getChannels() {
 		return channels;
 	}
@@ -82,4 +106,16 @@ public class Plan {
 		this.channels = channels;
 	}
 
+	public BigDecimal getMonthlyFee() {
+		return monthlyFee;
+	}
+
+	public void setMonthlyFee() {
+		BigDecimal fee = new BigDecimal(0);
+		for(Channel channel : this.getChannels()) {
+			fee.add(channel.getPrice());
+		}
+		this.monthlyFee = fee;
+	}
+	
 }

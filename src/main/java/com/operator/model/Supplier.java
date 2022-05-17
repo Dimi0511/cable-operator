@@ -1,8 +1,7 @@
 package com.operator.model;
 
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,10 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.MapKey;
-import javax.persistence.MapKeyJoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table; 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
@@ -49,6 +46,13 @@ public class Supplier {
 
 	@NotBlank
 	private String name;
+	
+	@ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+        name = "Supplier_Channel", 
+        joinColumns = { @JoinColumn(name = "supplier_id") }, 
+        inverseJoinColumns = { @JoinColumn(name = "channel_id") }
+    )	private Set<Channel> channels;
 
 	public Long getId() {
 		return id;
@@ -80,6 +84,14 @@ public class Supplier {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Set<Channel> getChannels() {
+		return channels;
+	}
+
+	public void setChannels(Set<Channel> channels) {
+		this.channels = channels;
 	}
 
 }

@@ -51,6 +51,7 @@ public class SupplierController {
                 .orElseThrow(() -> new ResourceNotFoundException("Supplier", "id", supplierId));
         
         supplier.setName(supplierDetails.getName());
+        supplier.setChannels(supplierDetails.getChannels());
 
         Supplier updatedSupplier = supplierRepository.save(supplier);
         return updatedSupplier;

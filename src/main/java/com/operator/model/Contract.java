@@ -3,6 +3,7 @@ package com.operator.model;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -49,6 +51,9 @@ public class Contract {
 	
 	@Column(unique=true)
 	private Long contractNumber;
+	
+    @ManyToMany(mappedBy = "contracts")
+	private Set<Plan> plans;
 	
 	private BigDecimal monthlyFee;
 	
@@ -116,5 +121,14 @@ public class Contract {
 	public void setPaymentList(List<Payment> paymentList) {
 		this.paymentList = paymentList;
 	}
+
+	public Set<Plan> getPlans() {
+		return plans;
+	}
+
+	public void setPlans(Set<Plan> plans) {
+		this.plans = plans;
+	}
+	
 	
 }
